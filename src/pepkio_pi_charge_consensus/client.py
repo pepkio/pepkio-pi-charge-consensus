@@ -63,6 +63,12 @@ class PepkioClient:
     def _tool_path(self, suffix: str) -> str:
         return f"/api/tools/v1/tools/{TOOL_ID}{suffix}"
 
+    def _request(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
+        try:
+            return self._http.request(method, path, **kwargs)
+        except httpx.RequestError as e:
+            raise PepkioAPIError(f"HTTP request failed: {e}") from e
+
     def _handle_response(self, response: httpx.Response) -> dict[str, Any]:
         try:
             body = response.json()
@@ -87,7 +93,7 @@ class PepkioClient:
         """Fetch and cache the tool manifest."""
         if self._manifest is not None and not refresh:
             return self._manifest
-        response = self._http.get(self._tool_path("/manifest"))
+        response = self._request("GET", self._tool_path("/manifest"))
         data = self._handle_response(response)
         self._manifest = data
         return data
@@ -126,7 +132,7 @@ class PepkioClient:
             options["label"] = label
         if options:
             payload["options"] = options
-        response = self._http.post(self._tool_path("/run"), json=payload)
+        response = self._request("POST", self._tool_path("/run"), json=payload)
         data = self._handle_response(response)
         result = parse_run_response(data)
         result.raise_for_error()
@@ -135,7 +141,7 @@ class PepkioClient:
     def get_run(self, run_id: str) -> RunResult:
         """Fetch a run by ID."""
         self._require_api_key()
-        response = self._http.get(f"/api/tools/v1/runs/{run_id}")
+        response = self._request("GET", f"/api/tools/v1/runs/{run_id}")
         data = self._handle_response(response)
         result = parse_run_response(data)
         result.raise_for_error()

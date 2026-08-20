@@ -65,6 +65,11 @@ class PepkioClient:
 
     def _request(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
         try:
+            m = method.upper()
+            if m == "GET":
+                return self._http.get(path, **kwargs)
+            elif m == "POST":
+                return self._http.post(path, **kwargs)
             return self._http.request(method, path, **kwargs)
         except httpx.RequestError as e:
             raise PepkioAPIError(f"HTTP request failed: {e}") from e

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Typed API request/response models for pepkio-pi-charge-consensus."""
 
 from __future__ import annotations

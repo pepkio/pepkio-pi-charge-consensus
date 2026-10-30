@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """HTTP client for the Pepkio pi-charge-consensus tool."""
 
 from __future__ import annotations
@@ -33,11 +34,12 @@ class PepkioClient:
         headers: dict[str, str] = {}
         if self._api_key:
             headers["Authorization"] = f"Bearer {self._api_key}"
+        transport = httpx.HTTPTransport(verify=self._verify, retries=3)
         self._http = httpx.Client(
             base_url=self._base_url,
             headers=headers,
             timeout=timeout,
-            verify=self._verify,
+            transport=transport,
         )
 
     def close(self) -> None:

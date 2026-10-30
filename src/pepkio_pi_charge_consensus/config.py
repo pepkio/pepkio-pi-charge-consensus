@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Configuration and environment resolution for pepkio-pi-charge-consensus."""
 
 from __future__ import annotations

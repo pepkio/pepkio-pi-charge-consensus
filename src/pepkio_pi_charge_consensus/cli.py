@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Command-line interface for pepkio-pi-charge-consensus."""
 
 from __future__ import annotations

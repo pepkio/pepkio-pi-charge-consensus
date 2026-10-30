@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """API error types for pepkio-pi-charge-consensus."""
 
 from __future__ import annotations

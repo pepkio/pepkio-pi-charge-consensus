@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: MIT
 """Pepkio pi-charge-consensus client library."""
 
 from .client import PepkioClient
